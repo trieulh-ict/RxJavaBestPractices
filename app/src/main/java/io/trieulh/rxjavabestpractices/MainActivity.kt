@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
+import io.trieulh.rxjavabestpractices.samples.SearchViewObservableActivity
 import io.trieulh.rxjavabestpractices.utils.ext.OnItemClickListener
 import io.trieulh.rxjavabestpractices.utils.ext.addOnItemClickListener
 import io.trieulh.rxjavabestpractices.utils.ext.launchActivity
@@ -25,7 +26,7 @@ class MainActivity : AppCompatActivity() {
             adapter = SamplesAdapter(dataSet)
             addOnItemClickListener(object : OnItemClickListener {
                 override fun onItemClicked(position: Int, view: View) {
-                    when(position) {
+                    when (position) {
                         0 -> launchActivity<SearchViewObservableActivity>()
                     }
                 }
