@@ -22,14 +22,14 @@ class SearchViewObservableActivity : AppCompatActivity() {
     private fun initView() {
         SearchViewObservable.fromView(searchEditText)
             .debounce(1000, TimeUnit.MILLISECONDS)
-            .filter { it.isNotEmpty() }
+            .filter { it.trim().isNotEmpty() }
             .distinctUntilChanged()
-            .switchMap { text -> searchData(text) }
+            .switchMap { text -> Observable.just(searchData(text)).delay(3000, TimeUnit.MILLISECONDS) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 lastSearchText.text = "Last search: $lastSearch"
-                countText.text = "Api call: $searchCount"
+                countText.text = "Api call: " + searchCount.toString()
             }
     }
 
@@ -37,11 +37,10 @@ class SearchViewObservableActivity : AppCompatActivity() {
 
     private var searchCount: Int = 0
 
-    private fun searchData(query: String): Observable<List<String>> {
+    private fun searchData(query: String): List<String> {
         lastSearch = query
         searchCount += 1
-        return Observable.just(data.filter { it.contains(query, true) })
-            .delay(3000, TimeUnit.MILLISECONDS)
+        return data.filter { it.contains(query, true) }
     }
 
     companion object {
